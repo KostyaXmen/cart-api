@@ -6,5 +6,5 @@ services:
     image: postgres
     environment:
       POSTGRES_USER: root
-      POSTGRES_DB: sqlpage
+      POSTGRES_DB: cart-api
       POSTGRES_PASSWORD: secret
