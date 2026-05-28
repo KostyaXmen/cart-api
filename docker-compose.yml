@@ -1,0 +1,10 @@
+services:
+  db: 
+    ports:
+      - "5432:5432"
+      - "3306:3306"
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_DB: sqlpage
+      POSTGRES_PASSWORD: secret
