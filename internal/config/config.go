@@ -4,20 +4,24 @@ import (
     "github.com/spf13/viper"
 )
 
+type ServerConfig struct {
+    Host string `yaml:"host"`
+    Port string `yaml:"port"`
+	Mode string `yaml:"mode"`
+}
+
+type DatabaseConfig struct {
+    Host     string `yaml:"host"`
+    Port     string `yaml:"port"`
+    Mode     string `yaml:"mode"`
+    User     string `yaml:"user"`
+    Password string `yaml:"password"`
+    Name     string `yaml:"name"`
+}
+
 type Config struct {
-    Server struct {
-        Host string `yaml:"host"`
-        Port string `yaml:"port"`
-		Mode string `yaml:"mode"`
-    } `yaml:"server"`
-    Database struct {
-        Host     string `yaml:"host"`
-        Port     string `yaml:"port"`
-        Mode     string `yaml:"mode"`
-        User     string `yaml:"user"`
-        Password string `yaml:"password"`
-        Name     string `yaml:"name"`
-    } `yaml:"database"`
+	Server   ServerConfig   `yaml:"server"`
+	Database DatabaseConfig `yaml:"database"`
 }
 
 func LoadConfig() (Config, error) {

@@ -30,11 +30,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	cart, err := repo.AddCart(ctx)
-	if err != nil {
-		fmt.Println("Error adding cart in repository:", err)
-		os.Exit(1)
-	}
+	cart := repo.AddCart(ctx)
 
 	fmt.Println(cart)
 

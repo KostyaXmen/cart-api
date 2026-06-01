@@ -36,10 +36,6 @@ func InitDB(cfg config.Config) (*sqlx.DB, error){
 		return nil, err
 	}
 
-	if err := db.Ping() ; err != nil {
-		return nil, err
-	}
-
 	if err := migrateDB(db); err != nil {
 		db.Close()
 		return nil, err
