@@ -1,0 +1,10 @@
+CREATE TABLE carts (
+    id BIGSERIAL PRIMARY KEY
+);
+
+CREATE TABLE cart_items (
+    id BIGSERIAL PRIMARY KEY,
+    cart_id BIGINT NOT NULL REFERENCES carts(id) ON DELETE CASCADE,
+    product VARCHAR(255) NOT NULL,
+    price NUMERIC(10, 2) NOT NULL
+);
