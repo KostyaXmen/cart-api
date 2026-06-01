@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  host: "localhost"
+  mode: "debug"
+
+database:
+  host: "localhost"
+  port: 5432
+  mode: "disable"
+  user: "root"
+  password: "secret"
+  name: "cart-api"
