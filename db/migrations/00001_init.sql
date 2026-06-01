@@ -1,8 +1,9 @@
-CREATE TABLE carts (
+-- +goose Up
+CREATE TABLE If NOT EXISTS carts (
     id BIGSERIAL PRIMARY KEY
 );
 
-CREATE TABLE cart_items (
+CREATE TABLE IF NOT EXISTS cart_items (
     id BIGSERIAL PRIMARY KEY,
     cart_id BIGINT NOT NULL REFERENCES carts(id) ON DELETE CASCADE,
     product VARCHAR(255) NOT NULL,
