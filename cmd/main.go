@@ -30,7 +30,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	cart := repo.AddCart(ctx)
+	cart := repo.CreateCart(ctx)
 
 	fmt.Println(cart)
 

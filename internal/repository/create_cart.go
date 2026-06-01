@@ -5,7 +5,7 @@ import (
 	"cart-api/internal/entity"
 )
 
-func (r *Repository) AddCart(ctx context.Context) entity.Cart {
+func (r *Repository) CreateCart(ctx context.Context) entity.Cart {
 	var insertedCart entity.Cart
 
 	query := `INSERT INTO carts DEFAULT VALUES RETURNING id`
