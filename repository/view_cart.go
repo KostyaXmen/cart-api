@@ -9,14 +9,8 @@ import (
 func (r *Repository) ViewCart(ctx context.Context, cartID int64) (entity.Cart, error) {
 	var viewedCart entity.Cart
 
-	tx, err := r.db.BeginTxx(ctx, nil)
-	if err != nil {
-		return viewedCart, err
-	}
-	defer tx.Rollback()
-
 	var exists bool
-	err = tx.GetContext(ctx, &exists, "SELECT EXISTS(SELECT 1 FROM carts WHERE id = $1)", cartID)
+	err := r.db.GetContext(ctx, &exists, "SELECT EXISTS(SELECT 1 FROM carts WHERE id = $1)", cartID)
 	if err != nil {
 		return viewedCart, err
 	}
@@ -25,7 +19,7 @@ func (r *Repository) ViewCart(ctx context.Context, cartID int64) (entity.Cart, e
 	}
 
 	query := `SELECT id, cart_id, product, price FROM cart_items WHERE cart_id = $1`
-	rows, err := tx.QueryxContext(ctx, query, cartID)
+	rows, err := r.db.QueryxContext(ctx, query, cartID)
 	if err != nil {
 		return viewedCart, err
 	}
