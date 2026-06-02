@@ -2,12 +2,12 @@ package main
 
 import (
 	"cart-api/internal/config"
+	"cart-api/internal/handlers"
 	"cart-api/internal/repository"
-	"cart-api/internal/entity"
+	"cart-api/internal/service"
 	"fmt"
+	"net/http"
 	"os"
-	"time"
-	"context"
 )
 
 func main() {
@@ -26,24 +26,22 @@ func main() {
 	defer dbConn.Close()
 
 	repo := repository.NewRepository(dbConn)
+	svc := service.NewService(repo)
+	handler := handlers.NewCartHandler(svc)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	mux := http.NewServeMux()
 
-	cart := repo.CreateCart(ctx)
+	handlers.SetupRoutes(mux, handler)
 
-	fmt.Println(cart)
-
-	insertedItem, err := repo.AddCartItem(ctx, 1, entity.AddCartItemRequest{"product2", 10.0})
-
-	if err != nil {
-		fmt.Println("Error adding item in cart:", err)
-	} else {
-		fmt.Println(insertedItem)
-		fmt.Println("List: ")
-		fmt.Println(repo.ViewCart(ctx, 1))
+	serverAddr := ":" + cfg.Server.Port
+	server := &http.Server{
+		Addr:         serverAddr,
+		Handler:      mux,
 	}
-	
 
-
+	fmt.Printf("Starting HTTP Server on %s...\n", serverAddr)
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		fmt.Printf("Server stopped with error: %v\n", err)
+		return
+	}
 }
