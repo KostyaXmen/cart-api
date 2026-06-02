@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+const (
+	api = "/api/v1/carts"
+)
+
 type CartHandler interface {
 	CreateCart(w http.ResponseWriter, r *http.Request)
 	AddToCart(w http.ResponseWriter, r *http.Request)
@@ -24,7 +28,6 @@ func NewCartHandler(service service.Service) CartHandler {
 }
 
 func SetupRoutes(r *http.ServeMux, h CartHandler) {
-	api := "/api/v1/carts"
 	r.HandleFunc("POST " + api, h.CreateCart)
 	r.HandleFunc("GET " + api + "/{id}", h.ViewCart)
 	r.HandleFunc("POST " + api + "/{id}/items", h.AddToCart)

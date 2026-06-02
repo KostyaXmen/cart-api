@@ -19,7 +19,7 @@ func (c *cartHandler) CalculateDiscount(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	json.NewEncoder(w).Encode(CartPrice{
+	json.NewEncoder(w).Encode(CartPriceResponse{
 		ID:              int64(id),
 		Total:           total,
 		Discount:        discount,

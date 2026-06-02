@@ -19,8 +19,18 @@ func (c *cartHandler) ViewCart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cart.ID = int64(id)
+	var cartViewResponse CartViewResponse
+	cartViewResponse.ID = cart.ID
+	for _, item := range cart.Items {
+		cartViewResponse.Items = append(cartViewResponse.Items, CartItemResponse{
+			ID:      item.ID,
+			CartID:  item.CartID,
+			Product: item.Product,
+			Price:   item.Price,
+		})
+	}
 	
-	json.NewEncoder(w).Encode(cart)
+	
+	json.NewEncoder(w).Encode(cartViewResponse)
 	w.WriteHeader(http.StatusOK)
 }

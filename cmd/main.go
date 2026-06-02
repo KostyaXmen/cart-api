@@ -37,14 +37,11 @@ func main() {
 	server := &http.Server{
 		Addr:         serverAddr,
 		Handler:      mux,
-		// ReadTimeout:  5 * time.Second,  
-		// WriteTimeout: 10 * time.Second, 
-		// IdleTimeout:  15 * time.Second,
 	}
 
 	fmt.Printf("Starting HTTP Server on %s...\n", serverAddr)
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		fmt.Printf("Server stopped with error: %v\n", err)
-		os.Exit(1)
+		return
 	}
 }
