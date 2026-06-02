@@ -11,7 +11,7 @@ func (r *Repository) CreateCart(ctx context.Context) (entity.Cart, error) {
 	query := `INSERT INTO carts DEFAULT VALUES RETURNING id`
 	err := r.db.QueryRowxContext(ctx, query).StructScan(&insertedCart)
 	if err != nil {
-		return insertedCart, err
+		return entity.Cart{}, err
 	}
 
 	return insertedCart, nil
