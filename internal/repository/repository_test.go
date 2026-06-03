@@ -98,6 +98,46 @@ func TestAddCartItem(t *testing.T) {
 			expectedError: errorsx.ErrCartLimitReached,
 		},
 		{
+		    name: "Error - Begin transaction failed",
+		    mockBehavior: func() {
+		        mock.ExpectBegin().WillReturnError(sql.ErrConnDone)
+		    },
+		    expectedItem:  entity.CartItem{},
+		    expectedError: sql.ErrConnDone,
+		},
+		{
+		    name: "Error - Database failure on cart check in tx",
+		    mockBehavior: func() {
+		        mock.ExpectBegin()
+			
+		        mock.ExpectQuery("SELECT EXISTS(SELECT 1 FROM carts WHERE id = $1)").
+		            WithArgs(cartID).
+		            WillReturnError(sql.ErrConnDone)
+			
+		        mock.ExpectRollback()
+		    },
+		    expectedItem:  entity.CartItem{},
+		    expectedError: sql.ErrConnDone,
+		},
+		{
+		    name: "Error - Database failure on count check in tx",
+		    mockBehavior: func() {
+		        mock.ExpectBegin()
+			
+		        mock.ExpectQuery("SELECT EXISTS(SELECT 1 FROM carts WHERE id = $1)").
+		            WithArgs(cartID).
+		            WillReturnRows(sqlmock.NewRows([]string{"exists"}).AddRow(true))
+			
+		        mock.ExpectQuery("SELECT COUNT(*) FROM cart_items WHERE cart_id = $1").
+		            WithArgs(cartID).
+		            WillReturnError(sql.ErrConnDone)
+			
+		        mock.ExpectRollback()
+		    },
+		    expectedItem:  entity.CartItem{},
+		    expectedError: sql.ErrConnDone,
+		},
+		{
 			name: "Error - Insert statement failed (triggers rollback)",
 			mockBehavior: func() {
 				mock.ExpectBegin()
@@ -254,6 +294,19 @@ func TestRemoveCartItem(t *testing.T) {
 			expectedError: errorsx.ErrCartNotFound,
 		},
 		{
+		    name: "Error - Database failure on item check",
+		    mockBehavior: func() {
+		        mock.ExpectQuery("SELECT EXISTS(SELECT 1 FROM carts WHERE id = $1)").
+		            WithArgs(cartID).
+		            WillReturnRows(sqlmock.NewRows([]string{"exists"}).AddRow(true))
+			
+		        mock.ExpectQuery("SELECT EXISTS(SELECT 1 FROM cart_items WHERE id = $1 AND cart_id = $2)").
+		            WithArgs(itemID, cartID).
+		            WillReturnError(sql.ErrConnDone)
+		    },
+		    expectedError: sql.ErrConnDone,
+		},
+		{
 			name: "Error - Cart item not found",
 			mockBehavior: func() {
 				mock.ExpectQuery("SELECT EXISTS(SELECT 1 FROM carts WHERE id = $1)").
@@ -384,6 +437,17 @@ func TestViewCart(t *testing.T) {
 			},
 			expectedCart:  entity.Cart{},
 			expectedError: errorsx.ErrCartNotFound,
+		},
+		{
+			name: "Error - Database failure on first cart check",
+			mockBehavior: func() {
+				
+				mock.ExpectQuery("SELECT EXISTS(SELECT 1 FROM carts WHERE id = $1)").
+					WithArgs(cartID).
+					WillReturnError(sql.ErrConnDone)
+			},
+			expectedCart:  entity.Cart{},
+			expectedError: sql.ErrConnDone,
 		},
 		{
 			name: "Error - Database failure on fetching items",
