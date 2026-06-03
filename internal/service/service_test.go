@@ -197,7 +197,7 @@ func TestCalculateDiscount(t *testing.T) {
 			expectedErr:      errors.New("db error"),
 		},
 		{
-			name: "Discount 10 percent - High total price",
+			name: "Success - Discount 10 percent - High total price",
 			mockBehavior: func() {
 				cart := entity.Cart{
 					Items: []entity.CartItem{
@@ -212,7 +212,7 @@ func TestCalculateDiscount(t *testing.T) {
 			expectedErr:      nil,
 		},
 		{
-			name: "Discount 5 percent - More than 3 items",
+			name: "Success - Discount 5 percent - More than 3 items",
 			mockBehavior: func() {
 				cart := entity.Cart{
 					Items: []entity.CartItem{
@@ -231,7 +231,7 @@ func TestCalculateDiscount(t *testing.T) {
 			expectedErr:      nil,
 		},
 		{
-			name: "No discount - Low price and few items",
+			name: "Success - No discount - Low price and few items",
 			mockBehavior: func() {
 				cart := entity.Cart{
 					Items: []entity.CartItem{
