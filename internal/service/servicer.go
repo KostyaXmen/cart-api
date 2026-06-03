@@ -5,6 +5,7 @@ import (
 	"context"
 )
 
+//go:generate $HOME/go/bin/mockery --name=Service --output=./mocks
 type Service interface {
 	CreateCart(ctx context.Context) (entity.Cart, error)
 	AddToCart(ctx context.Context, cartID int64, item entity.AddCartItemRequest) (entity.CartItem, error)
