@@ -8,3 +8,20 @@ services:
       POSTGRES_USER: root
       POSTGRES_DB: cart-api
       POSTGRES_PASSWORD: secret
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d cart-api"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  app:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config/config.yaml:/app/config/config.yaml:ro
+      - ./db/migrations:/app/db/migrations:ro
+    depends_on:
+      db:
+        condition: service_healthy
