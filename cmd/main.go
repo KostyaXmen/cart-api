@@ -20,12 +20,11 @@ func main() {
 		fmt.Println("Fatal error:", err)
 		os.Exit(1)
 	}
-
-	fmt.Println(cfg)
-
+	
 	dbConn, err := repository.InitDB(cfg)
 	if err != nil {
 		fmt.Println("Fatal error:", err)
+		os.Exit(1)
 	}
 	defer dbConn.Close()
 

@@ -1,9 +1,10 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
-	"encoding/json"
 )
 
 func (c *cartHandler) ViewCart(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +21,7 @@ func (c *cartHandler) ViewCart(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var cartViewResponse CartViewResponse
-	cartViewResponse.ID = cart.ID
+	cartViewResponse.ID = int64(id)
 	for _, item := range cart.Items {
 		cartViewResponse.Items = append(cartViewResponse.Items, CartItemResponse{
 			ID:      item.ID,
@@ -30,6 +31,7 @@ func (c *cartHandler) ViewCart(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 	
+	fmt.Println(cartViewResponse)
 	
 	json.NewEncoder(w).Encode(cartViewResponse)
 	w.WriteHeader(http.StatusOK)
