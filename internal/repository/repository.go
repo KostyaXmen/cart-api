@@ -1,9 +1,10 @@
 package repository
 
 import (
+	embed "cart-api/db"
 	"cart-api/internal/config"
 	"fmt"
-	"embed"
+
 
 	"github.com/jmoiron/sqlx"
 	"github.com/pressly/goose/v3"
@@ -18,8 +19,6 @@ type Repository struct {
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{db: db}
 }
-
-var embedMigrations embed.FS
 
 func InitDB(cfg config.Config) (*sqlx.DB, error){
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
@@ -45,11 +44,13 @@ func InitDB(cfg config.Config) (*sqlx.DB, error){
 }
 
 func migrateDB(db *sqlx.DB) error {
+	goose.SetBaseFS(embed.EmbedMigrations)
+	
 	if err := goose.SetDialect("postgres"); err != nil {
 		return err
 	}
 
-	if err := goose.Up(db.DB, "./db/migrations"); err != nil {
+	if err := goose.Up(db.DB, "migrations"); err != nil {
 		return err
 	}
 

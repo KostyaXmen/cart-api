@@ -2,6 +2,7 @@ package errorsx
 
 import (
 	"errors"
+	"fmt"
 )
 
 var (
@@ -11,3 +12,11 @@ var (
 	ErrInvalidProduct   = errors.New("product name cannot be blank")
 	ErrInvalidPrice     = errors.New("price must be greater than zero")
 )
+
+type errorResponse struct {
+	errorResponse string 
+}
+
+func (e *errorResponse) Error() string {
+	return fmt.Sprintf("Error: %s", e.errorResponse)
+}

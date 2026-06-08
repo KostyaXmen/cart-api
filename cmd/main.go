@@ -5,27 +5,26 @@ import (
 	"cart-api/internal/handlers"
 	"cart-api/internal/repository"
 	"cart-api/internal/service"
+	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"context"
 	"time"
 )
 
 func main() {
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		fmt.Println("Fatal error:", err)
-		os.Exit(1)
+		log.Fatal("Fatal error:", err)
 	}
-
-	fmt.Println(cfg)
-
+	
 	dbConn, err := repository.InitDB(cfg)
 	if err != nil {
 		fmt.Println("Fatal error:", err)
+		os.Exit(1)
 	}
 	defer dbConn.Close()
 
