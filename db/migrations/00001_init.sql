@@ -9,3 +9,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
     product VARCHAR(255) NOT NULL,
     price NUMERIC(10, 2) NOT NULL
 );
+
+-- +goose Down
+DROP TABLE IF EXISTS carts;
+DROP TABLE IF EXISTS cart_items;

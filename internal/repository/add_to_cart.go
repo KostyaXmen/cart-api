@@ -6,8 +6,17 @@ import (
 	"cart-api/internal/errorsx"
 )
 
+const (
+	maxCartItems = 5
+	minPrice     = 0
+)
+
 func (r *Repository) AddCartItem(ctx context.Context, cartID int64, item entity.AddCartItemRequest) (entity.CartItem, error) {
 	var insertedItem entity.CartItem
+
+	if item.Price < minPrice {
+		return insertedItem, errorsx.ErrInvalidPrice
+	}
 
 	tx, err := r.db.BeginTxx(ctx, nil)
 	if err != nil {
@@ -29,7 +38,7 @@ func (r *Repository) AddCartItem(ctx context.Context, cartID int64, item entity.
 	if err != nil {
 		return insertedItem, err
 	}
-	if count >= 5 {
+	if count >= maxCartItems {
 		return insertedItem, errorsx.ErrCartLimitReached
 	}
 
