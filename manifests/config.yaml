@@ -14,14 +14,12 @@ metadata:
 data: 
   POSTGRES_DB: "cart-api"
   config.yaml: |
-    server:
-      port: 8080
-      host: "localhost"      
-    database:
-      host: "postgres-service"
-      port: 5432
-      mode: "disable"
-      user: "root"
-      password: "secret"
-      name: "cart-api"
+               server:
+                 port: 8080
+                 host: "localhost"      
+               database:
+                 host: "postgres-service"
+                 port: 5432
+                 mode: "disable"
+                 name: "cart-api"
       
