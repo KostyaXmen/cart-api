@@ -1,8 +1,6 @@
 server:
   port: 8080
   host: "localhost"
-  mode: "debug"
-
 database:
   host: "db"
   port: 5432

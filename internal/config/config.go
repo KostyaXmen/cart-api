@@ -1,7 +1,9 @@
 package config
 
 import (
-    "github.com/spf13/viper"
+	"fmt"
+
+	"github.com/spf13/viper"
 )
 
 type ServerConfig struct {
@@ -29,11 +31,17 @@ func LoadConfig() (Config, error) {
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("./config")
 
+    viper.AutomaticEnv()
+
+    _ = viper.BindEnv("database.user", "DB_USER")
+    _ = viper.BindEnv("database.password", "DB_PASSWORD")
+
 	if err := viper.ReadInConfig(); err != nil {
         return Config{}, err
     }
 
 	var cfg Config
 	err := viper.Unmarshal(&cfg)
+    fmt.Println("user:", cfg.Database.User, "password:", cfg.Database.Password)
 	return cfg, err
 }

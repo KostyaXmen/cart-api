@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cart-db-secret
+  namespace: test
+type: Opaque
+stringData:
+  POSTGRES_USER: "root"
+  POSTGRES_PASSWORD: "secret"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart-api-config
+  namespace: test
+data: 
+  POSTGRES_DB: "cart-api"
+  config.yaml: |
+               server:
+                 port: 8080
+                 host: "localhost"      
+               database:
+                 host: "postgres-service"
+                 port: 5432
+                 mode: "disable"
+                 name: "cart-api"
+      
