@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cart-api-deployment
+  namespace: test
   labels:
     app: cart-api
 spec:
@@ -17,6 +18,13 @@ spec:
       initContainers:
         - name: wait-for-postgres
           image: busybox:1.36
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
           command:
             - sh
             - -c
@@ -67,6 +75,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cart-api-service
+  namespace: test
 spec:
   selector:
     app: cart-api
