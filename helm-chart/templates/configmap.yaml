@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart-api-config
+  namespace: {{ .Values.namespace }}
+data: 
+  POSTGRES_DB: {{ .Values.postgres.auth.database | quote }}
+  config.yaml: |
+               server:
+                 port: {{ .Values.api.service.port }}
+                 host: "localhost"      
+               database:
+                 host: "postgres-service"
+                 port: {{ .Values.postgres.service.port }}
+                 mode: "disable"
+                 name: {{ .Values.postgres.auth.database | quote }}
