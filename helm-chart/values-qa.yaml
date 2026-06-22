@@ -1,0 +1,35 @@
+environment: qa
+
+quota:
+  requests:
+    cpu: "1.5"
+    memory: "1.5Gi"
+  limits:
+    cpu: "3"
+    memory: "3Gi"
+  pods: 15
+
+api:
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "400m"
+      memory: "256Mi"
+
+autoscaling:
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 35
+
+postgres:
+  storage: 2Gi
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "400m"
+      memory: "512Mi"
