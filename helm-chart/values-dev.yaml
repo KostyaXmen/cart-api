@@ -1,0 +1,35 @@
+environment: dev
+
+quota:
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+  limits:
+    cpu: "1"
+    memory: "1Gi"
+  pods: 5
+
+api:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi" 
+    limits:
+      cpu: "200m"
+      memory: "128Mi" 
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 50
+
+postgres:
+  storage: 1Gi
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "200m"
+      memory: "256Mi"

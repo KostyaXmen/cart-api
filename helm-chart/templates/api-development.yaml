@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cart-api-deployment
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Values.environment }}
   labels:
     app: cart-api
 spec:
