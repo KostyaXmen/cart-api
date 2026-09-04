@@ -1,13 +1,13 @@
 namespace: test
 
-# quota:
-#   requests:
-#     cpu: 1
-#     memory: 1Gi
-#   limits:
-#     cpu: 2
-#     memory: 2Gi
-#   pods: 10
+quota:
+  requests:
+    cpu: 1
+    memory: 1Gi
+  limits:
+    cpu: 2
+    memory: 2Gi
+  pods: 10
 
 api:
   replicaCount: 1
