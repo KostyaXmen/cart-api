@@ -28,7 +28,7 @@ api:
       memory: "256Mi"
 
 autoscaling:
-  minReplicas: 1
+  minReplicas: 2
   maxReplicas: 6
   targetCPUUtilizationPercentage: 20
 
