@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cart-api
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/KostyaXmen/cart-api
+    path: helm-chart
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: test
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
